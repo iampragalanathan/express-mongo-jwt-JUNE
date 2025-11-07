@@ -8,7 +8,6 @@ const router = express.Router();
 
 const app = express();
 
-
 const loginLimiter = app.use(
   rateLimit({
     windowMs: 20 * 60 * 1000, //15mins
@@ -108,7 +107,9 @@ router.post("/api/login", loginLimiter, async (req, res) => {
 
     profile.refreshToken = refreshToken;
     await profile.save();
-    res.status(200).json({ accessToken, refreshToken, role: profile.role });
+    res
+      .status(200)
+      .json({ id: profile._id, accessToken, refreshToken, role: profile.role });
   } catch (error) {
     res.status(500).json({ message: `something went wrong ${error}` });
   }
